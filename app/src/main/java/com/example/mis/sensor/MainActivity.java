@@ -1,11 +1,27 @@
 package com.example.mis.sensor;
 
+import android.app.ListActivity;
+import android.content.Context;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
 import com.example.mis.sensor.FFT;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
@@ -13,24 +29,52 @@ public class MainActivity extends AppCompatActivity {
     //example variables
     private double[] rndAccExamplevalues;
     private double[] freqCounts;
+    Button music_button;
+    MediaPlayer m;
+    private Object view;
+    private static final String TAG = "oncreate";
+
+    //create an instance of the class
+    private SensorManager mSensorManager;
+    private Sensor mAccelerometer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate: Yess helloohoooww");
         setContentView(R.layout.activity_main);
 
+
+
+        //identifying that the sensors are on your device
+        mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
+        //check if there is an accelerometer available
+        if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            Log.d(TAG, "onCreate: There is an accelerometer!!");
+        } else {
+            Log.d(TAG, "onCreate: ERROR, no accelerometer!!");
+        }
+
+
+
+
         //initiate and fill example array with random values
-        rndAccExamplevalues = new double[64];
-        randomFill(rndAccExamplevalues);
-        new FFTAsynctask(64).execute(rndAccExamplevalues);
+        //rndAccExamplevalues = new double[64];
+        //randomFill(rndAccExamplevalues);
+        //new FFTAsynctask(64).execute(rndAccExamplevalues);
+
+
     }
+
 
 
     /**
      * Implements the fft functionality as an async task
      * FFT(int n): constructor with fft length
      * fft(double[] x, double[] y)
-     */
+
 
     private class FFTAsynctask extends AsyncTask<double[], Void, double[]> {
 
@@ -51,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
             /**
              * Init the FFT class with given window size and run it with your input.
              * The fft() function overrides the realPart and imagPart arrays!
-             */
+
             FFT fft = new FFT(wsize);
             fft.fft(realPart, imagPart);
             //init new double array for magnitude (e.g. frequency count)
@@ -74,6 +118,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    */
+
 
 
 
@@ -86,7 +132,6 @@ public class MainActivity extends AppCompatActivity {
             array[i] = rand.nextDouble();
         }
     }
-
 
 
 }
