@@ -141,9 +141,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //  https://developer.android.com/reference/android/hardware/SensorManager
     @Override
     public void onSensorChanged(SensorEvent event) {
-    //here is where you read the current sensor values
+        //here is where you read the current sensor values
         // and update views that are displaying the sensor information
-     // do as little as possible here to not block it!!
+        // do as little as possible here to not block it!!
+        Log.d(TAG, "onSensorChanged: changed");
+
+        //create floating numbers to log the various values
+        float x = event.values[0];
+        float y = event.values[1];
+        float Z = event.values[2];
+        Log.d(TAG, "onSensorChanged: value X" + x);
     }
 
     @Override
