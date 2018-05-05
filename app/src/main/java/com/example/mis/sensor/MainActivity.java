@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //create an instance of the class
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
-    private FFTAsynctask mFFT = new FFTAsynctask(1);
+    private FFTAsynctask mFFT = new FFTAsynctask(3);
 
 
 
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         //initiate and fill example array with random values
-//        rndAccExamplevalues = new double[1];
+//        rndAccExamplevalues = new double[64];
 //        randomFill(rndAccExamplevalues);
 //        mFFT.execute(rndAccExamplevalues);
 
@@ -143,10 +143,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // do as little as possible here to not block it!!
 //        Log.d(TAG, "onSensorChanged: changed");
 
+        double[] foobar = new double[event.values.length];
         //create floating numbers to log the various values
+        for(int i=0; i < event.values.length; i++){
+            foobar[i] = ((double) event.values[i]);
+        }
+
         double tmpX = ((double) event.values[0]);
         double tmpY = ((double) event.values[1]);
         double tmpZ = ((double) event.values[2]);
+
         double[] x = new double[1];
         double[] y = new double[1];
         double[] z = new double[1];
@@ -154,11 +160,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         y[0] = tmpY;
         z[0] = tmpZ;
 
-//        Log.d(TAG, "onSensorChanged: value x" + x);
-//        Log.d(TAG, "onSensorChanged: value y" + y);
-//        Log.d(TAG, "onSensorChanged: value z" + z);
-        Double foobar = mFFT.doInBackground(x)[0];
-        Log.d(TAG, "mFFT x: " + foobar.toString());
+        Log.d(TAG, "mFFT foobar: " + mFFT.doInBackground(foobar));
+        Log.d(TAG, "mFFT x: " + mFFT.doInBackground(x)[0]);
         Log.d(TAG, "mFFT y: " + mFFT.doInBackground(y)[0]);
         Log.d(TAG, "mFFT z: " + mFFT.doInBackground(z)[0]);
 //        Log.d(TAG, "onSensorChanged: " + y);
