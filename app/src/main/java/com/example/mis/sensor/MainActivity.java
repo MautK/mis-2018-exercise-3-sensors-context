@@ -48,12 +48,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
        // setContentView(R.layout.activity_main);
 
+        mCustomDrawableView = new CustomDrawableView(this);
+
         setContentView(mCustomDrawableView);
 
-        Resources res = getResources();
+        //Resources res = getResources();
         //make myImage into a drawable
-        Drawable my_imageView1 = res.getDrawable(R.drawable.my_imageview);
-        Drawable my_imageView2 = res.getDrawable(R.drawable.my_imageview2);
+        //Drawable my_imageView1 = res.getDrawable(R.drawable.my_imageview);
+        //Drawable my_imageView2 = res.getDrawable(R.drawable.my_imageview2);
 
 
 
