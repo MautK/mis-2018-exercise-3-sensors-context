@@ -6,6 +6,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     //create an instance of the class
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
+    private FFTAsynctask mFFT = new FFTAsynctask(1);
 
 
 
@@ -39,9 +41,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         setContentView(R.layout.activity_main);
 
         //initiate and fill example array with random values
-        //rndAccExamplevalues = new double[64];
-        //randomFill(rndAccExamplevalues);
-        //new FFTAsynctask(64).execute(rndAccExamplevalues);
+//        rndAccExamplevalues = new double[1];
+//        randomFill(rndAccExamplevalues);
+//        mFFT.execute(rndAccExamplevalues);
 
         //followed this explaination
         // https://developer.android.com/guide/topics/sensors/sensors_overview
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
      * Implements the fft functionality as an async task
      * FFT(int n): constructor with fft length
      * fft(double[] x, double[] y)
-
+     */
 
     private class FFTAsynctask extends AsyncTask<double[], Void, double[]> {
 
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             /**
              * Init the FFT class with given window size and run it with your input.
              * The fft() function overrides the realPart and imagPart arrays!
-
+             */
             FFT fft = new FFT(wsize);
             fft.fft(realPart, imagPart);
             //init new double array for magnitude (e.g. frequency count)
@@ -108,11 +110,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             freqCounts = values;
         }
     }
-
-    */
-
-
-
 
     /**
      * little helper function to fill example with random double values
@@ -144,13 +141,29 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         //here is where you read the current sensor values
         // and update views that are displaying the sensor information
         // do as little as possible here to not block it!!
-        Log.d(TAG, "onSensorChanged: changed");
+//        Log.d(TAG, "onSensorChanged: changed");
 
         //create floating numbers to log the various values
-        float x = event.values[0];
-        float y = event.values[1];
-        float Z = event.values[2];
-        Log.d(TAG, "onSensorChanged: value X" + x);
+        double tmpX = ((double) event.values[0]);
+        double tmpY = ((double) event.values[1]);
+        double tmpZ = ((double) event.values[2]);
+        double[] x = new double[1];
+        double[] y = new double[1];
+        double[] z = new double[1];
+        x[0] = tmpX;
+        y[0] = tmpY;
+        z[0] = tmpZ;
+
+//        Log.d(TAG, "onSensorChanged: value x" + x);
+//        Log.d(TAG, "onSensorChanged: value y" + y);
+//        Log.d(TAG, "onSensorChanged: value z" + z);
+        Double foobar = mFFT.doInBackground(x)[0];
+        Log.d(TAG, "mFFT x: " + foobar.toString());
+        Log.d(TAG, "mFFT y: " + mFFT.doInBackground(y)[0]);
+        Log.d(TAG, "mFFT z: " + mFFT.doInBackground(z)[0]);
+//        Log.d(TAG, "onSensorChanged: " + y);
+//        Log.d(TAG, "onSensorChanged: " + z);
+
     }
 
     @Override
