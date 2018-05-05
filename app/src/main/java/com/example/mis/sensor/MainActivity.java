@@ -1,6 +1,11 @@
 package com.example.mis.sensor;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,7 +17,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.Random;
 
@@ -25,7 +34,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     MediaPlayer m;
     private Object view;
     private static final String TAG = "oncreate";
-    //create an instance of the class
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
@@ -37,8 +45,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: Yess helloohoooww");
         setContentView(R.layout.activity_main);
+
+
+        Resources res = getResources();
+        //make myImage into a drawable
+        Drawable my_imageView1 = res.getDrawable(R.drawable.my_imageview);
+        Drawable my_imageView2 = res.getDrawable(R.drawable.my_imageview2);
+
+
+
+
 
         //initiate and fill example array with random values
 //        rndAccExamplevalues = new double[1];
