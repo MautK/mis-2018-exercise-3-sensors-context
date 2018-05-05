@@ -17,7 +17,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:color/background_dark" />
+        app:srcCompat="@android:color/background_dark"
+        android:src="@drawable/my_imageview"/>
 
     <ImageView
         android:id="@+id/imageView2"
@@ -31,6 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        app:srcCompat="@android:color/background_dark" />
+        app:srcCompat="@android:color/background_dark"
+        android:src="@drawable/my_imageview2"/>
 
 </android.support.constraint.ConstraintLayout>

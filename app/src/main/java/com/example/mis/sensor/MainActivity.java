@@ -1,6 +1,11 @@
 package com.example.mis.sensor;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,7 +17,11 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
+import android.view.View;
 import android.widget.Button;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.util.Random;
 
@@ -25,20 +34,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     MediaPlayer m;
     private Object view;
     private static final String TAG = "oncreate";
-    //create an instance of the class
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
-    private FFTAsynctask mFFT = new FFTAsynctask(3);
-
-
-
-
+    private FFTAsynctask mFFT = new FFTAsynctask(1);
+    CustomDrawableView mCustomDrawableView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate: Yess helloohoooww");
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.activity_main);
+
+        mCustomDrawableView = new CustomDrawableView(this);
+        setContentView(mCustomDrawableView);
+
+
 
         //initiate and fill example array with random values
 //        rndAccExamplevalues = new double[64];
@@ -160,8 +169,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         y[0] = tmpY;
         z[0] = tmpZ;
 
-        Log.d(TAG, "mFFT foobar: " + mFFT.doInBackground(foobar));
-        Log.d(TAG, "mFFT x: " + mFFT.doInBackground(x)[0]);
+        mCustomDrawableView.setX(x[0]);
+        mCustomDrawableView.setY(y[0]);
+//        Log.d(TAG, "onSensorChanged: value x" + x);
+//        Log.d(TAG, "onSensorChanged: value y" + y);
+//        Log.d(TAG, "onSensorChanged: value z" + z);
+        Double foobar = mFFT.doInBackground(x)[0];
+        Log.d(TAG, "mFFT x: " + foobar.toString());
         Log.d(TAG, "mFFT y: " + mFFT.doInBackground(y)[0]);
         Log.d(TAG, "mFFT z: " + mFFT.doInBackground(z)[0]);
 //        Log.d(TAG, "onSensorChanged: " + y);
