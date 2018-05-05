@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
+    CustomDrawableView mCustomDrawableView;
 
 
 
@@ -45,8 +46,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.activity_main);
 
+        setContentView(mCustomDrawableView);
 
         Resources res = getResources();
         //make myImage into a drawable
