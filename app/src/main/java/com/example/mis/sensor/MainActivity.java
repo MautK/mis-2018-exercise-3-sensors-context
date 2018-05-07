@@ -171,13 +171,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         mCustomDrawableView.setX(x[0]);
         mCustomDrawableView.setY(y[0]);
-//        Log.d(TAG, "onSensorChanged: value x" + x);
-//        Log.d(TAG, "onSensorChanged: value y" + y);
-//        Log.d(TAG, "onSensorChanged: value z" + z);
-        Double foobar = mFFT.doInBackground(x)[0];
-        Log.d(TAG, "mFFT x: " + foobar.toString());
-        Log.d(TAG, "mFFT y: " + mFFT.doInBackground(y)[0]);
-        Log.d(TAG, "mFFT z: " + mFFT.doInBackground(z)[0]);
+       Log.d(TAG, "onSensorChanged: value x" + x);
+        Log.d(TAG, "onSensorChanged: value y" + y);
+        Log.d(TAG, "onSensorChanged: value z" + z);
+        Double foobar2 = mFFT.doInBackground(x)[0];
+//        Log.d(TAG, "mFFT x: " + foobar2.toString());
+//        Log.d(TAG, "mFFT y: " + mFFT.doInBackground(y)[0]);
+//        Log.d(TAG, "mFFT z: " + mFFT.doInBackground(z)[0]);
 //        Log.d(TAG, "onSensorChanged: " + y);
 //        Log.d(TAG, "onSensorChanged: " + z);
 
