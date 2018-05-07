@@ -2,6 +2,7 @@ package com.example.mis.sensor;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -17,11 +18,10 @@ public class CustomDrawableView extends View {
 
     ArrayList<gettingData> receivedData;
 
-    //add the senses data into an array
+    //add the senses data from mainActivity into an array
     public void addData(gettingData data) {
         receivedData.add(data);
     }
-
 
 
     public CustomDrawableView(Context context) {
@@ -40,9 +40,7 @@ public class CustomDrawableView extends View {
 
         mDrawable = new ShapeDrawable(new OvalShape());
         mDrawable.setBounds(x, y, x + width, y + height);
-
     }
-
 }
 
 

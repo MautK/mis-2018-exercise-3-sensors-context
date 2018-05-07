@@ -3,6 +3,7 @@ package com.example.mis.sensor;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -38,16 +39,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     // setContentView(R.layout.activity_main);
-
-    CustomDrawableView mCustomDrawableView = new CustomDrawableView(this);
+    CustomDrawableView mCustomDrawableView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(mCustomDrawableView);
-
-
 
         //initiate and fill example array with random values
 //        rndAccExamplevalues = new double[64];
@@ -169,9 +167,21 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         y[0] = tmpY;
         z[0] = tmpZ;
 
+        //use the gettingData class to add the sensorValues from the SensorEvent
+        gettingData dataX = new gettingData(event.values[0]);
+        gettingData dataY = new gettingData(event.values[1]);
+
+        //here the values should be added to a draw function
+        mCustomDrawableView.addData(dataX);
+        mCustomDrawableView.addData(dataY);
+
+
+
         mCustomDrawableView.setX((float) x[0]);
         mCustomDrawableView.setY((float) y[0]);
-       Log.d(TAG, "onSensorChanged: value x" + x);
+
+
+        Log.d(TAG, "onSensorChanged: value x" + x);
         Log.d(TAG, "onSensorChanged: value y" + y);
         Log.d(TAG, "onSensorChanged: value z" + z);
         Double foobar2 = mFFT.doInBackground(x)[0];
@@ -187,5 +197,17 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
     }
+
+    public void drawLine(int i, double var1, double var2, Canvas canvas, int color){
+        Paint p = new Paint();
+        p.setColor(color);
+        float v = 100;
+        float v1 = 200 ;
+        float v2 = 300 ;
+        float v3 = 300 ;
+        canvas.drawLine(v, v1, v2, v3, p);
+
+    }
+
 }
 

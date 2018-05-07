@@ -6,26 +6,21 @@ import static android.content.ContentValues.TAG;
 
 public class gettingData {
 
-    private double x;
-    private double y;
+    private float x;
+    private float y;
 
-    public gettingData(double x, double y, double z) {
+
+    public gettingData(float value) {
         this.x = 0;
-        this.y = 0;
     }
 
-    public gettingData(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double setX() {
+    public float setX() {
         Log.d(TAG, "setX: new X" + x);
         return this.x;
 
     }
 
-    public double setY() {
+    public float setY() {
         return this.y;
     }
 
