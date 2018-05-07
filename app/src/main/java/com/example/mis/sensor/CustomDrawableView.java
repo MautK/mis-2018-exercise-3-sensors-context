@@ -3,6 +3,8 @@ package com.example.mis.sensor;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -17,10 +19,34 @@ public class CustomDrawableView extends View {
     private ShapeDrawable mDrawable;
 
     ArrayList<gettingData> receivedData;
+    public int sumPlots = 64;
+
 
     //add the senses data from mainActivity into an array
-    public void addData(gettingData data) {
+    public void addDataX(gettingData data) {
         receivedData.add(data);
+    }
+
+    public void addDataY(gettingData data) {
+        receivedData.add(data);
+    }
+
+    //connect subsequent points in the array list of gettingData
+    public void drawLine(int i, float a, float b, Canvas canvas, int color){
+        Paint p = new Paint();
+        p.setColor(color);
+    }
+
+    //draw the lines
+    protected void onDraw(Canvas canvas) {
+        receivedData = new ArrayList<>(sumPlots);
+        for (int i = 1; i < sumPlots-1; ++i) {
+            gettingData data1 = this.receivedData.get(this.receivedData.size() - i);
+            gettingData data2 = this.receivedData.get(this.receivedData.size() - 1 -i);
+            drawLine(i,  data1.setX(), data2.setX(), canvas, Color.RED);
+            drawLine(i, data1.setY(), data2.setY(), canvas, Color.BLUE);
+        }
+
     }
 
 

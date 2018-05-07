@@ -172,14 +172,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gettingData dataY = new gettingData(event.values[1]);
 
         //here the values should be added to a draw function
-        mCustomDrawableView.addData(dataX);
-        mCustomDrawableView.addData(dataY);
-
-
-
-        mCustomDrawableView.setX((float) x[0]);
-        mCustomDrawableView.setY((float) y[0]);
-
+        mCustomDrawableView.addDataX(dataX);
+        mCustomDrawableView.addDataY(dataY);
 
         Log.d(TAG, "onSensorChanged: value x" + x);
         Log.d(TAG, "onSensorChanged: value y" + y);
@@ -195,18 +189,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
-    public void drawLine(int i, double var1, double var2, Canvas canvas, int color){
-        Paint p = new Paint();
-        p.setColor(color);
-        float v = 100;
-        float v1 = 200 ;
-        float v2 = 300 ;
-        float v3 = 300 ;
-        canvas.drawLine(v, v1, v2, v3, p);
-
     }
 
 }
