@@ -45,29 +45,4 @@ public class CustomDrawableView extends View {
 
 }
 
-//class for retrieving the sensed data as doubles
-public class gettingData {
 
-    private double x;
-    private double y;
-
-    public gettingData(double x, double y, double z) {
-        this.x = 0;
-        this.y = 0;
-    }
-
-    public gettingData(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    public double setX() {
-         return this.x;
-        Log.d(TAG, "setX: new X" + x);
-    }
-
-    public double setY() {
-        return this.y;
-    }
-
-}

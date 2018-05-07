@@ -37,14 +37,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
-    CustomDrawableView mCustomDrawableView;
+    // setContentView(R.layout.activity_main);
+
+    CustomDrawableView mCustomDrawableView = new CustomDrawableView(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // setContentView(R.layout.activity_main);
 
-        mCustomDrawableView = new CustomDrawableView(this);
         setContentView(mCustomDrawableView);
 
 
@@ -169,8 +169,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         y[0] = tmpY;
         z[0] = tmpZ;
 
-        mCustomDrawableView.setX(x[0]);
-        mCustomDrawableView.setY(y[0]);
+        mCustomDrawableView.setX((float) x[0]);
+        mCustomDrawableView.setY((float) y[0]);
        Log.d(TAG, "onSensorChanged: value x" + x);
         Log.d(TAG, "onSensorChanged: value y" + y);
         Log.d(TAG, "onSensorChanged: value z" + z);
