@@ -22,9 +22,6 @@ public class sensorDataView extends View {
     private Canvas mcanvas;
     private Path mpath;
     private Paint mpaint;
-    private float mX, mY;
-    private float startX, startY, stopX, stopY;
-    private static final float TOLERANCE = 5;
     Context context;
 
     public sensorDataView(Context context, @Nullable AttributeSet attrs) {

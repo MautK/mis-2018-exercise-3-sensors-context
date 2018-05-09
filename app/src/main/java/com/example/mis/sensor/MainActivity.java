@@ -167,11 +167,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         x[0] = tmpX;
         y[0] = tmpY;
         z[0] = tmpZ;
-
-        //use the gettingData class to add the sensorValues from the SensorEvent
-        gettingData dataX = new gettingData(event.values[0]);
-        gettingData dataY = new gettingData(event.values[1]);
-
         //here the values should be added to a draw function
         //SensordataView.addDataX(dataX);
         //SensordataView.addDataY(dataY);
