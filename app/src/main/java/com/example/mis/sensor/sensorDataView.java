@@ -8,7 +8,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+
+import static android.content.ContentValues.TAG;
 
 public class sensorDataView extends View {
 
@@ -38,8 +42,11 @@ public class sensorDataView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        width = canvas.getWidth();
+        height = canvas.getHeight();
         mpaint.setColor(Color.DKGRAY);
-        canvas.drawLine(0,0, width, height/2, mpaint);
+        canvas.drawLine(0,0, width, height/4, mpaint);
+        Log.d(TAG, "onDraw: sensorDataview is active");
     }
 
     @Override
@@ -48,4 +55,56 @@ public class sensorDataView extends View {
 
         mbitmap = Bitmap.createBitmap(w,h/2, Bitmap.Config.ARGB_8888);
     }
+
+    private void StartTouch(float x, float y) {
+        mpath.moveTo(x, y);
+        mX = x;
+        mY = y;
+        Log.d(TAG, "StartTouch: touch");
+    }
+
+    private void  moveTouch(float x, float y) {
+        float dx = Math.abs(x - mX);
+        float dy = Math.abs(x - mY);
+        if (dx >= TOLERANCE || dy >= TOLERANCE) {
+            mpath.quadTo(mX, mY, (x + mX) /2, (y + mY) /2);
+            mX = x;
+            mY = y;
+        }
+    }
+
+    public void clearCanvas () {
+        mpath.reset();
+        invalidate();
+    }
+
+    private void upTouch() {
+        mpath.lineTo(mX, mY);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        float x = event.getX();
+        float y = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                StartTouch(x, y);
+                invalidate();
+                break;
+
+            case MotionEvent.ACTION_MOVE:
+                moveTouch(x, y);
+                invalidate();
+                break;
+
+            case MotionEvent.ACTION_UP:
+                upTouch();
+                invalidate();
+                break;
+        }
+
+        return true;
+    }
 }
+

@@ -8,13 +8,16 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
-public class ffftDataView extends sensorDataView {
+import static android.content.ContentValues.TAG;
+
+public class ffftDataView extends View {
 
     public int width;
     public int height;
-    private Bitmap mbitmap;
+    private Bitmap fbitmap;
     private Canvas mcanvas;
     private Path mpath;
     private Paint mpaint;
@@ -39,13 +42,17 @@ public class ffftDataView extends sensorDataView {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         mpaint.setColor(Color.DKGRAY);
+        width = canvas.getWidth();
+        height = canvas.getHeight();
         canvas.drawLine(0,height/2, width, height, mpaint);
+        Log.d(TAG, "onDraw: ffftDataView is active");
+
     }
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-        mbitmap = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
+        fbitmap = Bitmap.createBitmap(w,h, Bitmap.Config.ARGB_8888);
     }
 }

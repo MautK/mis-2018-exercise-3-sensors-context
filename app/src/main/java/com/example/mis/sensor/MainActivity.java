@@ -40,13 +40,18 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     private ffftDataView FftDataview;
     private sensorDataView SensordataView;
+    private Canvas sensorCanvas = new Canvas();
+    private Canvas fftCanvas = new Canvas();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        SensordataView = findViewById(R.id.imageView);
-        FftDataview = findViewById(R.id.fftView);
+        SensordataView = (sensorDataView) findViewById(R.id.imageView);
+        SensordataView.draw(sensorCanvas);
+
+        FftDataview = (ffftDataView) findViewById(R.id.fftView);
+        FftDataview.draw(fftCanvas);
 
         //followed this explaination
         // https://developer.android.com/guide/topics/sensors/sensors_overview
