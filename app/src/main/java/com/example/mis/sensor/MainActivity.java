@@ -38,19 +38,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
-    // setContentView(R.layout.activity_main);
-    CustomDrawableView mCustomDrawableView;
-
+    private ffftDataView FftDataview;
+    private sensorDataView SensordataView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(mCustomDrawableView);
-
-        //initiate and fill example array with random values
-//        rndAccExamplevalues = new double[64];
-//        randomFill(rndAccExamplevalues);
-//        mFFT.execute(rndAccExamplevalues);
+        setContentView(R.layout.activity_main);
+        SensordataView = findViewById(R.id.imageView);
+        FftDataview = findViewById(R.id.fftView);
 
         //followed this explaination
         // https://developer.android.com/guide/topics/sensors/sensors_overview
@@ -172,8 +168,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         gettingData dataY = new gettingData(event.values[1]);
 
         //here the values should be added to a draw function
-        mCustomDrawableView.addDataX(dataX);
-        mCustomDrawableView.addDataY(dataY);
+        //SensordataView.addDataX(dataX);
+        //SensordataView.addDataY(dataY);
 
         Log.d(TAG, "onSensorChanged: value x" + x);
         Log.d(TAG, "onSensorChanged: value y" + y);
