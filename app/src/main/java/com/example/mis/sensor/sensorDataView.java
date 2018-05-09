@@ -56,55 +56,5 @@ public class sensorDataView extends View {
         mbitmap = Bitmap.createBitmap(w,h/2, Bitmap.Config.ARGB_8888);
     }
 
-    private void StartTouch(float x, float y) {
-        mpath.moveTo(x, y);
-        mX = x;
-        mY = y;
-        Log.d(TAG, "StartTouch: touch");
-    }
-
-    private void  moveTouch(float x, float y) {
-        float dx = Math.abs(x - mX);
-        float dy = Math.abs(x - mY);
-        if (dx >= TOLERANCE || dy >= TOLERANCE) {
-            mpath.quadTo(mX, mY, (x + mX) /2, (y + mY) /2);
-            mX = x;
-            mY = y;
-        }
-    }
-
-    public void clearCanvas () {
-        mpath.reset();
-        invalidate();
-    }
-
-    private void upTouch() {
-        mpath.lineTo(mX, mY);
-    }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        float x = event.getX();
-        float y = event.getY();
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                StartTouch(x, y);
-                invalidate();
-                break;
-
-            case MotionEvent.ACTION_MOVE:
-                moveTouch(x, y);
-                invalidate();
-                break;
-
-            case MotionEvent.ACTION_UP:
-                upTouch();
-                invalidate();
-                break;
-        }
-
-        return true;
-    }
 }
 
