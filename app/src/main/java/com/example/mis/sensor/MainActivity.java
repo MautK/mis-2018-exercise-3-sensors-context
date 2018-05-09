@@ -3,6 +3,7 @@ package com.example.mis.sensor;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.OvalShape;
@@ -40,15 +41,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     private int wsize = 64;
-
+    private ffftDataView FftDataview;
+    private sensorDataView SensordataView;
+    private Canvas sensorCanvas = new Canvas();
+    private Canvas fftCanvas = new Canvas();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //initiate and fill example array with random values
-//        rndAccExamplevalues = new double[64];
-//        randomFill(rndAccExamplevalues);
-//        mFFT.execute(rndAccExamplevalues);
+        setContentView(R.layout.activity_main);
+        SensordataView = (sensorDataView) findViewById(R.id.imageView);
+        SensordataView.draw(sensorCanvas);
+
+        FftDataview = (ffftDataView) findViewById(R.id.fftView);
+        FftDataview.draw(fftCanvas);
 
         //followed this explaination
         // https://developer.android.com/guide/topics/sensors/sensors_overview
@@ -151,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
     }
+
 }
 
