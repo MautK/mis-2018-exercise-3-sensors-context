@@ -20,7 +20,7 @@
         app:srcCompat="@android:color/background_dark"
         />
 
-    <com.example.mis.sensor.ffftDataView
+    <com.example.mis.sensor.fftDataView
         android:id="@+id/fftView"
         android:layout_width="0dp"
         android:layout_height="0dp"

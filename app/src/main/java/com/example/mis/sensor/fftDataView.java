@@ -13,7 +13,7 @@ import android.view.View;
 
 import static android.content.ContentValues.TAG;
 
-public class ffftDataView extends View {
+public class fftDataView extends DataView {
 
     public int width;
     public int height;
@@ -23,7 +23,7 @@ public class ffftDataView extends View {
     private Paint mpaint;
     Context context;
 
-    public ffftDataView(Context context, @Nullable AttributeSet attrs) {
+    public fftDataView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 
@@ -42,7 +42,7 @@ public class ffftDataView extends View {
         width = canvas.getWidth();
         height = canvas.getHeight();
         canvas.drawLine(0,height/2, width, height, mpaint);
-        Log.d(TAG, "onDraw: ffftDataView is active");
+        Log.d(TAG, "onDraw: fftDataView is active");
 
     }
 

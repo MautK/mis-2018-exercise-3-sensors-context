@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     private int wsize = 64;
-    private ffftDataView FftDataview;
+    private fftDataView FftDataview;
     private sensorDataView SensordataView;
     private Canvas sensorCanvas = new Canvas();
     private Canvas fftCanvas = new Canvas();
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         SensordataView = (sensorDataView) findViewById(R.id.imageView);
         SensordataView.draw(sensorCanvas);
 
-        FftDataview = (ffftDataView) findViewById(R.id.fftView);
+        FftDataview = (fftDataView) findViewById(R.id.fftView);
         FftDataview.draw(fftCanvas);
 
         //followed this explaination
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorData newSensorData = new sensorData();
         newSensorData.setData(event.values[0], event.values[1], event.values[2]);
 
-        Log.d(TAG, "onSensorChanged: " + newSensorData.getMagnitude());
+        Log.d(TAG, "onSensorChanged: " + newSensorData.getX()); //.getMagnitude());
     }
 
     @Override

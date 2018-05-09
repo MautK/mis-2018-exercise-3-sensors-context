@@ -14,7 +14,7 @@ import android.view.View;
 
 import static android.content.ContentValues.TAG;
 
-public class sensorDataView extends View {
+public class sensorDataView extends DataView {
 
     public int width;
     public int height;
