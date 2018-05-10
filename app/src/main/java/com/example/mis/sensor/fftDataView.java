@@ -55,14 +55,6 @@ public class fftDataView extends DataView {
         }
     }
 
-    double calcAvg() {
-        double sum = 0;
-        for (int i = 0; i < wsize / 2 - 1; i++) {
-            sum += x[i];
-        }
-        return Math.round((sum/(wsize/2))*1000)/1000;
-    }
-
     @Override
     void drawLine(int firstPointX, int secondPointX,
                   float firstPointY, float secondPointY,

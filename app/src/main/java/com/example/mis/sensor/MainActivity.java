@@ -1,7 +1,10 @@
 package com.example.mis.sensor;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -13,9 +16,15 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.location.LocationProvider;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,15 +61,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Canvas fftCanvas = new Canvas();
     private SeekBar windowControl;
     private SeekBar sampleControl;
+    private final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 42;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final Activity thisActivity = this;
+        checkPermission(thisActivity);
 
-        AssetFileDescriptor afd = getAssets().openFd("Cycle.m4a");
-        m = new MediaPlayer();
-        m.setDataSource(afd.getFileDescriptor());
-        m.prepare();
+        LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        LocationListener locationListener = new LocationListener() {
+            public void onLocationChanged(Location location) {
+                // Called when a new location is found by the network location provider.
+                decideToPlay(location);
+            }
+
+            public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+            public void onProviderEnabled(String provider) {}
+
+            public void onProviderDisabled(String provider) {}
+        };
+
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
 
         setContentView(R.layout.activity_main);
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -123,6 +147,54 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
 
     }
+    public void decideToPlay (Location mLocation){
+        if (mLocation.getSpeed() / 3.6 < 6) {
+            playMusic("Walk.mp3");
+        } else if (mLocation.getSpeed() / 3.6 >= 6 && mLocation.getSpeed() / 3.6 < 14) {
+            playMusic("Run.mp3");
+        } else if (mLocation.getSpeed() / 3.6 >= 14) {
+            playMusic("Cycle.mp3");
+        }
+    }
+    public void checkPermission(Activity thisActivity) {
+        // followed this guide https://developer.android.com/training/permissions/requesting.html
+        //permission added to manifest
+        if (ContextCompat.checkSelfPermission(thisActivity,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(thisActivity,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION
+            );
+//            }
+        } else {
+//            mMap.setMyLocationEnabled(true);
+        }
+    }
+
+    // followed this guide https://developer.android.com/training/permissions/requesting.html
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request.
+        }
+    }
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -139,10 +211,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d(TAG, "onStopTrackingTouch: DEFUQ");
         int progress = seekBar.getProgress();
         mSensorManager.unregisterListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
-//        mSensorDataView.removeSensorData();
-//        mFFTDataView.removeSensorData();
-//        mSensorDataView.invalidate();
-//        mFFTDataView.invalidate();
         mSensorManager.registerListener(this,
                 mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 progress * 1000);
@@ -196,23 +264,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    /**
-     * little helper function to fill example with random double values
-     */
-    public void randomFill(double[] array){
-        Random rand = new Random();
-        for(int i = 0; array.length > i; i++){
-            array[i] = rand.nextDouble();
-        }
-    }
-
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        m.stop();
-//        m.release();
-//    }
-
     //followed this example
     // https://developer.android.com/reference/android/hardware/SensorManager
     protected void onResume() {
@@ -224,7 +275,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onPause();
         mSensorManager.unregisterListener(this);
     }
-
 
     //followed this example
     //  https://developer.android.com/reference/android/hardware/SensorManager
@@ -241,19 +291,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mFFTDataView.draw(fftCanvas);
         mSensorDataView.invalidate();
         mFFTDataView.invalidate();
-        Log.d(TAG, "onSensorChanged: " + mFFTDataView.calcAvg());
-//        mFFTDataView.addSensorData(newSensorData);
-//        mFFTDataView.draw(fftCanvas);
-        if (mFFTDataView.calcAvg() <= 20) {
-//            playRun(".mp3");
-        } else if (mFFTDataView.calcAvg() > 20 && mFFTDataView.calcAvg() <= 25) {
-            playMusic("Walk.mp3");
-        } else if (mFFTDataView.calcAvg() > 25 && mFFTDataView.calcAvg() <= 50) {
-            playMusic("Run.mp3");
-        } else if (mFFTDataView.calcAvg() > 50) {
-            playMusic("Cycle.mp3");
-        }
     }
+
+
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -280,7 +320,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 e.printStackTrace();
             }
 
-        };
+        }
     }
+
 
 

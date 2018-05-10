@@ -8,6 +8,8 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_MOCK_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-feature android:name="android.hardware.location.gps" />
+
 
 
     <application
@@ -20,7 +22,9 @@
         android:configChanges="orientation"
         android:screenOrientation="portrait">
 
-
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyBNJv7RBo3NxXhmPySRq9EKo_tH4W_dDcs" />
 
     <activity android:name=".MainActivity">
 
