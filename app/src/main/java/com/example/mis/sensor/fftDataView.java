@@ -11,53 +11,51 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import java.util.Arrays;
+
 import static android.content.ContentValues.TAG;
+import static android.os.Parcelable.PARCELABLE_WRITE_RETURN_VALUE;
 
 public class fftDataView extends DataView {
-
-    public int width;
-    public int height;
     private Bitmap fbitmap;
-    private Canvas mcanvas;
-    private Path mpath;
-    private Paint mpaint;
     Context context;
+
+    FFT mFFT;
+    double[] x = new double[wsize];
+    double[] y = new double[wsize];
 
     public fftDataView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
-        mpath = new Path();
-        mpaint = new Paint();
-        mpaint.setAntiAlias(true);
-        mpaint.setStyle(Paint.Style.STROKE);
-        mpaint.setStrokeJoin(Paint.Join.ROUND);
-        mpaint.setStrokeWidth(8f);
+        mFFT = new FFT(wsize);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        mpaint.setColor(Color.DKGRAY);
-        width = canvas.getWidth();
-        height = canvas.getHeight();
-        float startX;
-        float stopX;
-        float startY;
-        float stopY;
-        Paint mPaint;
+        x = new double[wsize];
+        y = new double[wsize];
+        Arrays.fill(y, 0.0d);
 
-        for (int i = 0; i < wsize - 1; i++) {
-            sensorData dataStart = DataArray.get(i);
-            sensorData dataStop = DataArray.get(i + 1);
-//            drawLine(startX, stopX, startY, stopY, mPaint);
-
+        for (int i = 0; i < wsize; i++) {
+            x[i] = calcMagnitude(DataArray.get(i));
         }
-        canvas.drawLine(0,height/2, width, height, mpaint);
-        Log.d(TAG, "onDraw: fftDataView is active");
 
+        mFFT.fft(x, y);
+        for (int i = 0; i < wsize/2; i++) {
+            y[i] = Math.sqrt(Math.pow(x[i], 2) - Math.pow(y[i], 2));
+        }
+        for (int i = 0; i < wsize; i++) {
+            drawLine(i, i + 1, (float) y[i], (float) y[i+1], canvas, new Paint(Color.YELLOW));
+        }
     }
-
+    @Override
+    public void removeSensorData(){
+        super.removeSensorData();
+        x = new double[wsize];
+        y = new double[wsize];
+        mFFT = new FFT(wsize);
+    }
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
