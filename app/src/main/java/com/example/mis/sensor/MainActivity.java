@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 
+import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Queue;
@@ -39,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private double[] rndAccExamplevalues;
     private double[] freqCounts;
     Button music_button;
-    MediaPlayer m;
+    MediaPlayer m = new MediaPlayer();
     private static final String TAG = "oncreate";
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
@@ -205,6 +206,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        m.stop();
+//        m.release();
+//    }
+
     //followed this example
     // https://developer.android.com/reference/android/hardware/SensorManager
     protected void onResume() {
@@ -236,21 +244,43 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         Log.d(TAG, "onSensorChanged: " + mFFTDataView.calcAvg());
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
-
-
-        AssetFileDescriptor afd = getAssets();
-        m = new MediaPlayer();
-        m.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-        m.prepare();
-        m.start();
-
+        if (mFFTDataView.calcAvg() <= 20) {
+//            playRun(".mp3");
+        } else if (mFFTDataView.calcAvg() > 20 && mFFTDataView.calcAvg() <= 25) {
+            playMusic("Walk.mp3");
+        } else if (mFFTDataView.calcAvg() > 25 && mFFTDataView.calcAvg() <= 50) {
+            playMusic("Run.mp3");
+        } else if (mFFTDataView.calcAvg() > 50) {
+            playMusic("Cycle.mp3");
+        }
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
+    public void playMusic(String file) {
+            try {
 
+                if(m.isPlaying()) {
 
-}
+                } else {
+//                    m.stop();
+                    m.release();
+                    m = new MediaPlayer();
+                    AssetFileDescriptor descriptor = getAssets().openFd(file);
+                    m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                    descriptor.close();
+
+                    m.prepare();
+                    m.setVolume(6f, 6f);
+                    m.start();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        };
+    }
+
 
