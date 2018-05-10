@@ -15,25 +15,16 @@ import android.view.View;
 import static android.content.ContentValues.TAG;
 
 public class sensorDataView extends DataView {
-
-    public int width;
-    public int height;
     private Bitmap mbitmap;
-    private Canvas mcanvas;
-    private Path mpath;
-    private Paint mPaint;
     private Paint xPaint = new Paint();
     private Paint yPaint = new Paint();
     private Paint zPaint = new Paint();
     private Paint magPaint = new Paint();
     Context context;
-    private DataView dataView;
 
     public sensorDataView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-
-        mpath = new Path();
     }
 
     @Override
@@ -55,10 +46,13 @@ public class sensorDataView extends DataView {
             float point1Z = (float) dataPoint1.getZ();
             float point2Z = (float) dataPoint2.getZ();
 
-            //draw line using the function
             drawLine(i, i + 1, point1X, point2X, canvas, xPaint);
             drawLine(i, i + 1, point1Y, point2Y, canvas, yPaint);
             drawLine(i, i + 1, point1Z, point2Z, canvas, zPaint);
+            drawLine(i, i + 1,
+                    calcMagnitude(dataPoint1),
+                    calcMagnitude(dataPoint2),
+                    canvas, magPaint);
         }
     }
 
