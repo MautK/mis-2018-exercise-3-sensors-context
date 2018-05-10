@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.Gallery;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private sensorDataView mSensorDataView;
     private Canvas sensorCanvas = new Canvas();
     private Canvas fftCanvas = new Canvas();
+    private SeekBar windowControl = null;
+    private SeekBar sampleControl = null;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +76,35 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+
+        windowControl = (SeekBar) findViewById(R.id.windowSeekbar);
+        sampleControl = (SeekBar) findViewById(R.id.sampleSeekbar);
+        
+        windowControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+            
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                progressChanged = progress;
+                Log.d(TAG, "onStartTrackingTouch: wsize" + wsize);
+                Log.d(TAG, "onStartTrackingTouch: progressChanged" + progressChanged);
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+//                progressChanged = seekBar.getProgress();
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                wsize = (int) Math.pow(2, progressChanged);
+                mSensorDataView.resizeDataArray(wsize);
+            }
+        });
+
+
         //check if there is an accelerometer available
         //might be a bit double because we are checking for the same thing in onSensorChanged
         if (mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
@@ -78,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         } else {
             Log.d(TAG, "onCreate: ERROR, no accelerometer!!");
         }
+
     }
 
     /**
@@ -169,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
 
-        Log.d(TAG, "onSensorChanged: " + newSensorData.getX()); //.getMagnitude());
     }
 
     @Override
