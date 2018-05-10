@@ -50,12 +50,11 @@ public class sensorDataView extends DataView {
         yPaint.setColor(Color.GREEN);
         zPaint.setColor(Color.BLUE);
         magPaint.setColor(Color.WHITE);
+        Log.d(TAG, "onDraw: point1X" + wsize);
 
-        Log.d(TAG, "onDraw: " + wsize);
-
-        for (int i = 0; i < wsize - 1 ; i++) {
-            sensorData dataPoint1 = this.DataArray.get(wsize-this.DataArray.size() + i);
-            sensorData dataPoint2 = this.DataArray.get(wsize + 1 -this.DataArray.size() + i);
+        for (int i = 0; i < DataArray.size() - 1 ; i++) {
+            sensorData dataPoint1 = DataArray.get(i);
+            sensorData dataPoint2 = DataArray.get(i + 1);
             float point1X = (float) dataPoint1.getX();
             float point2X = (float) dataPoint2.getX();
             float point1Y = (float) dataPoint1.getY();
@@ -67,10 +66,7 @@ public class sensorDataView extends DataView {
             drawLine(i, i + 1, point1X, point2X, canvas, xPaint);
             drawLine(i, i + 1, point1Y, point2Y, canvas, yPaint);
             drawLine(i, i + 1, point1Z, point2Z, canvas, zPaint);
-            Log.d(TAG, "onDraw: point1X" + point1X);
         }
-
-        Log.d(TAG, "onDraw: sensroDataView is active");
     }
 
 

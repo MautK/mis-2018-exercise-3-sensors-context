@@ -40,8 +40,18 @@ public class DataView extends View {
     }
     ArrayList<sensorData> sliceDataArray(ArrayList<sensorData> oldArr, int start, int end) {
         ArrayList<sensorData> tempArr = new ArrayList<>(wsize);
-        for (int i = 0; i < end; i++) {
-            tempArr.add(oldArr.get(start + i));
+        if (end > wsize) {
+            for (int i = 0; i < end - wsize; i++) {
+                tempArr.add(oldArr.get(start + i));
+            }
+        } else {
+            for (int i = 0; i < wsize; i++) {
+                if (i < wsize - end) {
+                    tempArr.add(new sensorData());
+                } else {
+                    tempArr.add(oldArr.get(i-(wsize - end)));
+                }
+            }
         }
         return tempArr;
     }
