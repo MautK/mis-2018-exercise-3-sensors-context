@@ -237,11 +237,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
 
+
+        AssetFileDescriptor afd = getAssets();
+        m = new MediaPlayer();
+        m.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        m.prepare();
+        m.start();
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
+
 
 }
 
