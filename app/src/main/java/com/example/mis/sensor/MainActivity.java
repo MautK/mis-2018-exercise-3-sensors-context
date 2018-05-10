@@ -88,19 +88,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 progressChanged = progress;
                 Log.d(TAG, "onStartTrackingTouch: wsize" + wsize);
                 Log.d(TAG, "onStartTrackingTouch: progressChanged" + progressChanged);
-
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-//                progressChanged = seekBar.getProgress();
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 wsize = (int) Math.pow(2, progressChanged);
                 mSensorDataView.resizeDataArray(wsize);
+            }
+        });
+
+        sampleControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            progressChanged = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
