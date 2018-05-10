@@ -299,6 +299,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
 
+    //source https://stackoverflow.com/questions/3289038/play-audio-file-from-the-assets-directory
     public void playMusic(String file) {
             try {
 
