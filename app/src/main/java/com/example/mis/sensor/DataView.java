@@ -2,6 +2,7 @@ package com.example.mis.sensor;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -60,5 +61,13 @@ public class DataView extends View {
         );
         return (float) magnitude;
     }
-
+    void drawLine(int firstPointX, int secondPointX,
+                  float firstPointY, float secondPointY,
+                  Canvas canvas, Paint mPaint) {
+        float firstX = firstPointX * canvas.getWidth() / wsize;
+        float secondX = secondPointX * canvas.getWidth() / wsize;
+        float firstY = canvas.getHeight() / 2 - canvas.getHeight() / 2 / 100 * firstPointY;
+        float secondY = canvas.getHeight() / 2 - canvas.getHeight() / 2 / 100 * secondPointY;
+        canvas.drawLine(firstX, firstY, secondX, secondY, mPaint);
+    }
 }

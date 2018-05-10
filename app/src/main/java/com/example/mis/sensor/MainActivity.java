@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     private int wsize = 64;
-    private fftDataView FftDataview;
+    private fftDataView mFFTDataView;
     private sensorDataView mSensorDataView;
     private Canvas sensorCanvas = new Canvas();
     private Canvas fftCanvas = new Canvas();
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mSensorDataView = (sensorDataView) findViewById(R.id.imageView);
         mSensorDataView.draw(sensorCanvas);
 
-        FftDataview = (fftDataView) findViewById(R.id.fftView);
-        FftDataview.draw(fftCanvas);
+        mFFTDataView = (fftDataView) findViewById(R.id.fftView);
+        mFFTDataView.draw(fftCanvas);
 
         //followed this explaination
         // https://developer.android.com/guide/topics/sensors/sensors_overview
@@ -152,6 +152,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sensorData newSensorData = new sensorData();
         newSensorData.setData(event.values[0], event.values[1], event.values[2]);
         mSensorDataView.addSensorData(newSensorData);
+        mSensorDataView.draw(sensorCanvas);
+        mFFTDataView.addSensorData(newSensorData);
+        mFFTDataView.draw(fftCanvas);
 
         Log.d(TAG, "onSensorChanged: " + newSensorData.getX()); //.getMagnitude());
     }
