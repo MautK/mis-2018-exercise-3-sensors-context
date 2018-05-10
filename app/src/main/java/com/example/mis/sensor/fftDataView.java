@@ -41,6 +41,18 @@ public class fftDataView extends DataView {
         mpaint.setColor(Color.DKGRAY);
         width = canvas.getWidth();
         height = canvas.getHeight();
+        float startX;
+        float stopX;
+        float startY;
+        float stopY;
+        Paint mPaint;
+
+        for (int i = 0; i < wsize - 1; i++) {
+            sensorData dataStart = DataArray.get(i);
+            sensorData dataStop = DataArray.get(i + 1);
+//            drawLine(startX, stopX, startY, stopY, mPaint);
+
+        }
         canvas.drawLine(0,height/2, width, height, mpaint);
         Log.d(TAG, "onDraw: fftDataView is active");
 

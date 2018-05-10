@@ -21,19 +21,24 @@ public class sensorDataView extends DataView {
     private Bitmap mbitmap;
     private Canvas mcanvas;
     private Path mpath;
-    private Paint mpaint;
+    private Paint mPaint;
+    private Paint xPaint = new Paint();
+    private Paint yPaint = new Paint();
+    private Paint zPaint = new Paint();
+    private Paint magPaint = new Paint();
     Context context;
+    private DataView dataView;
 
     public sensorDataView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
 
         mpath = new Path();
-        mpaint = new Paint();
-        mpaint.setAntiAlias(true);
-        mpaint.setStyle(Paint.Style.STROKE);
-        mpaint.setStrokeJoin(Paint.Join.ROUND);
-        mpaint.setStrokeWidth(8f);
+//        mpaint = new Paint();
+//        mpaint.setAntiAlias(true);
+//        mpaint.setStyle(Paint.Style.STROKE);
+//        mpaint.setStrokeJoin(Paint.Join.ROUND);
+//        mpaint.setStrokeWidth(8f);
     }
 
     @Override
@@ -41,33 +46,32 @@ public class sensorDataView extends DataView {
         super.onDraw(canvas);
         width = canvas.getWidth();
         height = canvas.getHeight();
-        mpaint.setColor(Color.RED);
+        xPaint.setColor(Color.RED);
+        yPaint.setColor(Color.GREEN);
+        zPaint.setColor(Color.BLUE);
+        magPaint.setColor(Color.WHITE);
 
         for (int i = 0; i < wsize - 1 ; i++) {
             sensorData dataPoint1 = this.DataArray.get(wsize-this.DataArray.size() + i);
             sensorData dataPoint2 = this.DataArray.get(wsize + 1 -this.DataArray.size() + i);
-            double point1X = (dataPoint1.getX() / 2 );
-            double point2X = (dataPoint2.getX() / 2 );
-            double point1Y = (dataPoint1.getY() / 2 );
-            double point2Y = (dataPoint2.getY() / 2 );
+            float point1X = (float) dataPoint1.getX();
+            float point2X = (float) dataPoint2.getX();
+            float point1Y = (float) dataPoint1.getY();
+            float point2Y = (float) dataPoint2.getY();
 
-             float xAxes1 = ( width / wsize ) + i;
-             float xAxes2 = ( width / wsize ) + i;
+//             float xAxes1 = ( width / wsize ) + i;
+//             float xAxes2 = ( width / wsize ) + i;
 
 
             //draw line using the function
-            drawLine();
-            //draw line for y values
-            canvas.drawPath(xAxes1, point1Y, xAxes2, point2Y, mpaint);
-            //draw line for x values
-            canvas.drawPath(i, point1X, i + 1, point2X, mpaint);
+            drawLine(i, i + 1, point1X, point2X, mcanvas, xPaint);
+            drawLine(i, i + 1, point1Y, point2Y, mcanvas, yPaint);
+
 
         }
-
-
-        canvas.drawLine(0,0, width, height/4, mpaint);
         Log.d(TAG, "onDraw: sensorDataview is active");
     }
+
 
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
