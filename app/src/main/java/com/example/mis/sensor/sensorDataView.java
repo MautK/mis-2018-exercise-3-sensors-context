@@ -44,12 +44,14 @@ public class sensorDataView extends DataView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        width = canvas.getWidth();
-        height = canvas.getHeight();
+//        width = canvas.getWidth();
+//        height = canvas.getHeight();
         xPaint.setColor(Color.RED);
         yPaint.setColor(Color.GREEN);
         zPaint.setColor(Color.BLUE);
         magPaint.setColor(Color.WHITE);
+
+        Log.d(TAG, "onDraw: " + wsize);
 
         for (int i = 0; i < wsize - 1 ; i++) {
             sensorData dataPoint1 = this.DataArray.get(wsize-this.DataArray.size() + i);
@@ -64,12 +66,12 @@ public class sensorDataView extends DataView {
 
 
             //draw line using the function
-            drawLine(i, i + 1, point1X, point2X, mcanvas, xPaint);
-            drawLine(i, i + 1, point1Y, point2Y, mcanvas, yPaint);
-
-
+            drawLine(i, i + 1, point1X, point2X, canvas, xPaint);
+            drawLine(i, i + 1, point1Y, point2Y, canvas, yPaint);
+            Log.d(TAG, "onDraw: point1X" + point1X);
         }
-        Log.d(TAG, "onDraw: sensorDataview is active");
+
+        Log.d(TAG, "onDraw: sensroDataView is active");
     }
 
 
