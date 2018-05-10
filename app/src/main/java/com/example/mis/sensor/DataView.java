@@ -33,6 +33,7 @@ public class DataView extends View {
     void popDataArray() {
         DataArray.remove(0);
     }
+
     void setWindowSize(int newWindowSize) {
         wsize = newWindowSize;
     }
