@@ -162,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         newSensorData.setData(event.values[0], event.values[1], event.values[2]);
         mSensorDataView.addSensorData(newSensorData);
         mSensorDataView.draw(sensorCanvas);
+        mSensorDataView.invalidate();
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
 

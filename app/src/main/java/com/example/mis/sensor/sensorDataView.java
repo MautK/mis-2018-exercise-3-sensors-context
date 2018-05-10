@@ -60,14 +60,13 @@ public class sensorDataView extends DataView {
             float point2X = (float) dataPoint2.getX();
             float point1Y = (float) dataPoint1.getY();
             float point2Y = (float) dataPoint2.getY();
-
-//             float xAxes1 = ( width / wsize ) + i;
-//             float xAxes2 = ( width / wsize ) + i;
-
+            float point1Z = (float) dataPoint1.getZ();
+            float point2Z = (float) dataPoint2.getZ();
 
             //draw line using the function
             drawLine(i, i + 1, point1X, point2X, canvas, xPaint);
             drawLine(i, i + 1, point1Y, point2Y, canvas, yPaint);
+            drawLine(i, i + 1, point1Z, point2Z, canvas, zPaint);
             Log.d(TAG, "onDraw: point1X" + point1X);
         }
 
