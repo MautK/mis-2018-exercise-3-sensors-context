@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 public class DataView extends View {
     ArrayList<sensorData> DataArray;
-    int wsize;
+    int wsize = 64;
 
     public DataView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
@@ -34,6 +34,7 @@ public class DataView extends View {
     void popDataArray() {
         DataArray.remove(0);
     }
+
     void setWindowSize(int newWindowSize) {
         wsize = newWindowSize;
     }
