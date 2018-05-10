@@ -31,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Queue;
 import java.util.Random;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity implements SensorEventListener, SeekBar.OnSeekBarChangeListener {
 
     //example variables
     private double[] rndAccExamplevalues;
@@ -42,14 +42,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private FFTAsynctask mFFT = new FFTAsynctask(1);
-    private int wsize = 64;
+    private int wsize = (int) Math.pow(2, 7);
     private fftDataView mFFTDataView;
     private sensorDataView mSensorDataView;
     private Canvas sensorCanvas = new Canvas();
     private Canvas fftCanvas = new Canvas();
-    private SeekBar windowControl = null;
-    private SeekBar sampleControl = null;
-
+    private SeekBar windowControl;
+    private SeekBar sampleControl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,10 +58,14 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
 
+        mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                100000);
+
         mSensorDataView = (sensorDataView) findViewById(R.id.imageView);
         mFFTDataView = (fftDataView) findViewById(R.id.fftView);
-//        mSensorDataView.setWindowSize(64);
-//        mSensorDataView.resizeDataArray(64);
+
         for (int i = 0; i < wsize; i++) {
             mSensorDataView.addSensorData(new sensorData());
             mFFTDataView.addSensorData(new sensorData());
@@ -83,15 +86,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
         windowControl = (SeekBar) findViewById(R.id.windowSeekbar);
         sampleControl = (SeekBar) findViewById(R.id.sampleSeekbar);
-        
+        sampleControl.setOnSeekBarChangeListener(this);
+
         windowControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged = 0;
-            
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                progressChanged = progress;
-                Log.d(TAG, "onStartTrackingTouch: wsize" + wsize);
-                Log.d(TAG, "onStartTrackingTouch: progressChanged" + progressChanged);
+
             }
 
             @Override
@@ -100,29 +100,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                wsize = (int) Math.pow(2, progressChanged);
+                int progress = seekBar.getProgress();
+                wsize = (int) Math.pow(2, progress);
                 mSensorDataView.resizeDataArray(wsize);
             }
         });
-
-        sampleControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progressChanged = 0;
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            progressChanged = progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
-
 
         //check if there is an accelerometer available
         //might be a bit double because we are checking for the same thing in onSensorChanged
@@ -132,6 +114,30 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Log.d(TAG, "onCreate: ERROR, no accelerometer!!");
         }
 
+    }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        Log.d(TAG, "onStopTrackingTouch: DEFUQ");
+        int progress = seekBar.getProgress();
+        mSensorManager.unregisterListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+//        mSensorDataView.removeSensorData();
+//        mFFTDataView.removeSensorData();
+//        mSensorDataView.invalidate();
+//        mFFTDataView.invalidate();
+        mSensorManager.registerListener(this,
+                mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                progress * 1000);
     }
 
     /**
@@ -220,6 +226,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         mFFTDataView.draw(fftCanvas);
         mSensorDataView.invalidate();
         mFFTDataView.invalidate();
+        Log.d(TAG, "onSensorChanged: " + mFFTDataView.calcAvg());
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
 

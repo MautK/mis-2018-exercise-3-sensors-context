@@ -37,22 +37,41 @@ public class fftDataView extends DataView {
         y = new double[wsize];
         Arrays.fill(y, 0.0d);
 
-        for (int i = 0; i < wsize; i++) {
+        for (int i = 0; i < DataArray.size() - 1; i++) {
             x[i] = calcMagnitude(DataArray.get(i));
         }
 
         mFFT.fft(x, y);
-        for (int i = 0; i < wsize; i++) {
+        for (int i = 0; i < wsize / 2; i++) {
             y[i] = Math.sqrt(Math.pow(x[i], 2) - Math.pow(y[i], 2));
         }
         Paint newPaint = new Paint();
         newPaint.setColor(Color.YELLOW);
         newPaint.setStrokeWidth(3.0f);
-        for (int i = 0; i < wsize - 1; i++) {
+        for (int i = 0; i < wsize / 2 - 1; i++) {
             drawLine(i, i + 1,
-                    Math.abs((float) y[i]), Math.abs((float) y[i + 1]),
+                    (float) y[i], (float) y[i + 1],
                     canvas, newPaint);
         }
+    }
+
+    double calcAvg() {
+        double sum = 0;
+        for (int i = 0; i < wsize / 2 - 1; i++) {
+            sum += x[i];
+        }
+        return Math.round((sum/(wsize/2))*1000)/1000;
+    }
+
+    @Override
+    void drawLine(int firstPointX, int secondPointX,
+                  float firstPointY, float secondPointY,
+                  Canvas canvas, Paint mPaint) {
+        float firstX = firstPointX * canvas.getWidth() / (wsize/2);
+        float secondX = secondPointX * canvas.getWidth() / (wsize/2);
+        float firstY = canvas.getHeight() - (canvas.getHeight() / 100) * firstPointY;
+        float secondY = canvas.getHeight() - (canvas.getHeight() / 100) * secondPointY;
+        canvas.drawLine(firstX, firstY, Math.abs(secondX), Math.abs(secondY), mPaint);
     }
     @Override
     public void removeSensorData(){

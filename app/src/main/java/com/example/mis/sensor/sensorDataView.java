@@ -34,7 +34,6 @@ public class sensorDataView extends DataView {
         yPaint.setColor(Color.GREEN);
         zPaint.setColor(Color.BLUE);
         magPaint.setColor(Color.WHITE);
-        Log.d(TAG, "onDraw: point1X" + wsize);
 
         for (int i = 0; i < DataArray.size() - 1 ; i++) {
             sensorData dataPoint1 = DataArray.get(i);
