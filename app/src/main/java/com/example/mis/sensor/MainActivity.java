@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private FFTAsynctask mFFT = new FFTAsynctask(1);
     private int wsize = 64;
     private fftDataView FftDataview;
-    private sensorDataView SensordataView;
+    private sensorDataView mSensorDataView;
     private Canvas sensorCanvas = new Canvas();
     private Canvas fftCanvas = new Canvas();
     @Override
@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
-        SensordataView = (sensorDataView) findViewById(R.id.imageView);
-        SensordataView.draw(sensorCanvas);
+        mSensorDataView = (sensorDataView) findViewById(R.id.imageView);
+        mSensorDataView.draw(sensorCanvas);
 
         FftDataview = (fftDataView) findViewById(R.id.fftView);
         FftDataview.draw(fftCanvas);
@@ -151,6 +151,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         // do as little as possible here to not block it!!
         sensorData newSensorData = new sensorData();
         newSensorData.setData(event.values[0], event.values[1], event.values[2]);
+        mSensorDataView.addSensorData(newSensorData);
 
         Log.d(TAG, "onSensorChanged: " + newSensorData.getX()); //.getMagnitude());
     }

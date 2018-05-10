@@ -41,7 +41,7 @@ public class sensorDataView extends DataView {
         super.onDraw(canvas);
         width = canvas.getWidth();
         height = canvas.getHeight();
-        mpaint.setColor(Color.DKGRAY);
+        mpaint.setColor(Color.RED);
         canvas.drawLine(0,0, width, height/4, mpaint);
         Log.d(TAG, "onDraw: sensorDataview is active");
     }
