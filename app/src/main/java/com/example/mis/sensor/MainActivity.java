@@ -2,6 +2,7 @@ package com.example.mis.sensor;
 
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -230,11 +231,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        mFFTDataView.addSensorData(newSensorData);
 //        mFFTDataView.draw(fftCanvas);
 
+
+        AssetFileDescriptor afd = getAssets();
+        m = new MediaPlayer();
+        m.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        m.prepare();
+        m.start();
+
     }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
     }
+
+
 
 }
 
