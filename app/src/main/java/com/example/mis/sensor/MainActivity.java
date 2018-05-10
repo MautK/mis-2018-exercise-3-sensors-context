@@ -1,6 +1,7 @@
 package com.example.mis.sensor;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         mSensorDataView = (sensorDataView) findViewById(R.id.imageView);
         mFFTDataView = (fftDataView) findViewById(R.id.fftView);
 //        mSensorDataView.setWindowSize(64);
