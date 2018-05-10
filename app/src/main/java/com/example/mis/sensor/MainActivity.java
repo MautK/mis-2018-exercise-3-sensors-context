@@ -200,12 +200,12 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        m.stop();
-        m.release();
-    }
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        m.stop();
+//        m.release();
+//    }
 
     //followed this example
     // https://developer.android.com/reference/android/hardware/SensorManager
@@ -240,11 +240,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 //        mFFTDataView.draw(fftCanvas);
         if (mFFTDataView.calcAvg() <= 20) {
 //            playRun(".mp3");
-        } else if (mFFTDataView.calcAvg() > 20 && mFFTDataView.calcAvg() <= 30) {
+        } else if (mFFTDataView.calcAvg() > 20 && mFFTDataView.calcAvg() <= 25) {
             playMusic("Walk.mp3");
-        } else if (mFFTDataView.calcAvg() > 30 && mFFTDataView.calcAvg() <= 35) {
+        } else if (mFFTDataView.calcAvg() > 25 && mFFTDataView.calcAvg() <= 50) {
             playMusic("Run.mp3");
-        } else if (mFFTDataView.calcAvg() > 35) {
+        } else if (mFFTDataView.calcAvg() > 50) {
             playMusic("Cycle.mp3");
         }
     }
@@ -257,17 +257,19 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             try {
 
                 if(m.isPlaying()) {
-                    m.stop();
+
+                } else {
+//                    m.stop();
                     m.release();
                     m = new MediaPlayer();
-                }
-                AssetFileDescriptor descriptor = getAssets().openFd(file);
-                m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
-                descriptor.close();
+                    AssetFileDescriptor descriptor = getAssets().openFd(file);
+                    m.setDataSource(descriptor.getFileDescriptor(), descriptor.getStartOffset(), descriptor.getLength());
+                    descriptor.close();
 
-                m.prepare();
-                m.setVolume(6f, 6f);
-                m.start();
+                    m.prepare();
+                    m.setVolume(6f, 6f);
+                    m.start();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
