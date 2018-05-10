@@ -1,6 +1,7 @@
 package com.example.mis.sensor;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -55,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+
         mSensorDataView = (sensorDataView) findViewById(R.id.imageView);
         mFFTDataView = (fftDataView) findViewById(R.id.fftView);
 //        mSensorDataView.setWindowSize(64);
@@ -88,19 +92,34 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
                 progressChanged = progress;
                 Log.d(TAG, "onStartTrackingTouch: wsize" + wsize);
                 Log.d(TAG, "onStartTrackingTouch: progressChanged" + progressChanged);
-
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-//                progressChanged = seekBar.getProgress();
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 wsize = (int) Math.pow(2, progressChanged);
                 mSensorDataView.resizeDataArray(wsize);
+            }
+        });
+
+        sampleControl.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progressChanged = 0;
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            progressChanged = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
