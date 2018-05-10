@@ -42,11 +42,13 @@ public class fftDataView extends DataView {
         }
 
         mFFT.fft(x, y);
-        for (int i = 0; i < wsize/2; i++) {
+        for (int i = 0; i < wsize; i++) {
             y[i] = Math.sqrt(Math.pow(x[i], 2) - Math.pow(y[i], 2));
         }
-        for (int i = 0; i < wsize; i++) {
-            drawLine(i, i + 1, (float) y[i], (float) y[i+1], canvas, new Paint(Color.YELLOW));
+        Paint newPaint = new Paint(Color.YELLOW);
+        newPaint.setStrokeWidth(3.0f);
+        for (int i = 0; i < wsize - 1; i++) {
+            drawLine(i, i + 1, (float) y[i], (float) y[i + 1], canvas, newPaint);
         }
     }
     @Override

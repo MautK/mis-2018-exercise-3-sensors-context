@@ -34,18 +34,11 @@ public class sensorDataView extends DataView {
         this.context = context;
 
         mpath = new Path();
-//        mpaint = new Paint();
-//        mpaint.setAntiAlias(true);
-//        mpaint.setStyle(Paint.Style.STROKE);
-//        mpaint.setStrokeJoin(Paint.Join.ROUND);
-//        mpaint.setStrokeWidth(8f);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        width = canvas.getWidth();
-//        height = canvas.getHeight();
         xPaint.setColor(Color.RED);
         yPaint.setColor(Color.GREEN);
         zPaint.setColor(Color.BLUE);
